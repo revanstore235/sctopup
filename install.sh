@@ -88,7 +88,6 @@ fi
 
 echo -e "${CYAN}[+] Download script...${NC}"
 GITHUB_RAW="https://raw.githubusercontent.com/revanstore235/revanstore/main/script.py"
-
 curl -fsSL "$GITHUB_RAW" -o script.py >/dev/null 2>&1 &
 loading "Download script.py"
 
