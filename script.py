@@ -44,6 +44,13 @@ logo1 = f"""
 
 _ketik_active = True
 
+def safe_input(prompt=""):
+    try:
+        return input(prompt)
+    except (EOFError, KeyboardInterrupt):
+        print(f"\n{RED}Input dibatalkan. Program berhenti.{WHITE}")
+        sys.exit(0)
+
 def ketik(c, d=0.00003):
     global _ketik_active
     if not _ketik_active:
@@ -54,10 +61,10 @@ def ketik(c, d=0.00003):
             sys.stdout.write(e)
             sys.stdout.flush()
             time.sleep(d)
-    except KeyboardInterrupt:
-        print(f"\n{RED}Proses dihentikan oleh pengguna (Ctrl+C). Keluar...{PURPLE}")
+    except (KeyboardInterrupt, EOFError):
+        print(f"\n{RED}Proses dihentikan. Keluar...{PURPLE}")
         _ketik_active = False
-        raise
+        sys.exit(0)
 
 def get_visual_length(s):
     return len(re.sub(r'\x1b\[[0-9;]*[mK]', '', s))
@@ -96,7 +103,7 @@ def fetch_json(url, retries=3, delay=1):
                 data = response.json()
                 if "exit()" in str(data):
                     print(f"\n{RED}Lisensi Anda tidak valid. Silakan hubungi administrator.{PURPLE}")
-                    exit()
+                    sys.exit(0)
                 return data
         except (req.RequestException, ValueError):
             pass
@@ -156,7 +163,7 @@ def license_exp(build_id_hash, expiry_date_str):
 """
         ketik(menu_perpanjangan, d=0.0001)
         
-        pilihan = input(f'''{PURPLE}╭­\x1b[1;33;41m\x1b[1;37m✦ PILIH PAKET ✦\x1b[1;33m\x1b[0m\x1b[{PURPLE}
+        pilihan = safe_input(f'''{PURPLE}╭­\x1b[1;33;41m\x1b[1;37m✦ PILIH PAKET ✦\x1b[1;33m\x1b[0m\x1b[{PURPLE}
 ╰───{RED}▶ ''').strip()
         
         if pilihan in ["1", "2", "3", "4", "5", "6"]:
@@ -197,7 +204,7 @@ def license_exp(build_id_hash, expiry_date_str):
             
             while True:
                 print(f"\n{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Ketik '{GREEN2}1{YELLOW}' untuk Konfirmasi Pembayaran ke Admin,")
-                konfirmasi = input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Ketik '{RED}2{YELLOW}' untuk Kembali memilih pilihan paket Perpanjangan: {WHITE}").strip()
+                konfirmasi = safe_input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Ketik '{RED}2{YELLOW}' untuk Kembali memilih pilihan paket Perpanjangan: {WHITE}").strip()
                 
                 if konfirmasi == '1':
                     pesan_wa = f"Saya ingin konfirmasi perpanjangan lisensi dengan detail:\nPaket: {selected_paket}"
@@ -211,7 +218,7 @@ def license_exp(build_id_hash, expiry_date_str):
                     print("\n")
                     send_wa(build_id_hash, USER_LICENSE_NAME, pesan_wa)
                     time.sleep(3)
-                    exit()
+                    sys.exit(0)
                 elif konfirmasi == '2':
                     os.system('clear')
                     ketik(logo2_upper_part, d=0.0001)
@@ -221,7 +228,7 @@ def license_exp(build_id_hash, expiry_date_str):
 
         elif pilihan == "0":
             ketik(f"{YELLOW}Anda memilih untuk keluar. Sampai jumpa!{WHITE}")
-            exit()
+            sys.exit(0)
         else:
             ketik(f"{RED}Pilihan tidak valid, silakan coba lagi.{WHITE}")
             time.sleep(2)
@@ -234,7 +241,7 @@ def license_enol(build_id_hash):
 
     nama_pengguna_lisensi = ""
     while not nama_pengguna_lisensi:
-        nama_pengguna_lisensi = input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Masukkan Nama Anda untuk permintaan lisensi:{WHITE} ").strip()
+        nama_pengguna_lisensi = safe_input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Masukkan Nama Anda untuk permintaan lisensi:{WHITE} ").strip()
         if not nama_pengguna_lisensi:
             ketik(f"{RED}Nama tidak boleh kosong. Silakan masukkan nama Anda.{WHITE}")
 
@@ -242,13 +249,13 @@ def license_enol(build_id_hash):
     ketik(f"{PURPLE}[{YELLOW}◆{PURPLE}] {RED}Menghubungi Admin...{PURPLE}")
     time.sleep(3)
     send_wa(build_id_hash, nama_pengguna_lisensi, "Saya ingin membeli lisensi baru.")
-    exit()
+    sys.exit(0)
 
 def license_check():
     global USER_LICENSE_NAME, USER_LICENSE_EXPIRY_INFO, DEVICE_ID_INFO
     build_id_hash = dev_id()
     DEVICE_ID_INFO = build_id_hash
-    url = f'https://api.github.com/repos/revanstore235/revanstore/contents/lisensi/{build_id_hash}.json'
+    url = f'https://api.github.com/repos/revanstore235/sctopup/contents/lisensi/{build_id_hash}.json'
     ketik(f"\n{PURPLE}[{YELLOW}◆{PURPLE}] {RED}Memeriksa lisensi Anda...{PURPLE}", d=0.01)
     time.sleep(2)
 
@@ -330,13 +337,13 @@ def login():
             else:
                 error_message = response_data.get("errorMessage", "Periksa Device ID Anda!")
                 print(f"\n{RED}Login gagal. {error_message}")
-                exit()
+                sys.exit(0)
         else:
-            exit(f"{RED} Error: Akun tidak ditemukan (Status: {response.status_code})")
+            sys.exit(f"{RED} Error: Akun tidak ditemukan (Status: {response.status_code})")
     except req.exceptions.RequestException as e:
-        exit(f"{RED}Koneksi gagal. Periksa jaringan Anda. ({e})")
+        sys.exit(f"{RED}Koneksi gagal. Periksa jaringan Anda. ({e})")
     except Exception as e:
-        exit(f"Terjadi kesalahan saat login: {e}")
+        sys.exit(f"Terjadi kesalahan saat login: {e}")
 
 def mxx_fetch_info():
     global headers
@@ -660,7 +667,7 @@ def HapusAkun():
     global headers
     nama_akun_sebelum_fetch, saldo_sebelum_fetch = mxx_fetch_info()
 
-    konfirmasi = input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Apakah Anda yakin ingin menghapus akun '{nama_akun_sebelum_fetch if nama_akun_sebelum_fetch else 'ini'}'? Tindakan ini tidak dapat dibatalkan. (y/n):{WHITE} ").strip().lower()
+    konfirmasi = safe_input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Apakah Anda yakin ingin menghapus akun '{nama_akun_sebelum_fetch if nama_akun_sebelum_fetch else 'ini'}'? Tindakan ini tidak dapat dibatalkan. (y/n):{WHITE} ").strip().lower()
 
     berhasil = False
     if konfirmasi == 'y':
@@ -700,7 +707,7 @@ def ganti_nama_akun():
     nama_akun_sebelum_fetch, _ = mxx_fetch_info()
     nama_untuk_prompt_sebelum = nama_akun_sebelum_fetch if nama_akun_sebelum_fetch else "[Nama Saat Ini Tidak Terdeteksi]"
 
-    nama_baru = input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Masukkan nama akun baru:{WHITE} ").strip()
+    nama_baru = safe_input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Masukkan nama akun baru:{WHITE} ").strip()
     if not nama_baru:
         ketik(f"{RED}Nama akun tidak boleh kosong.{WHITE}")
         tampilkan_detail_transaksi(
@@ -712,7 +719,7 @@ def ganti_nama_akun():
         )
         return
 
-    konfirmasi = input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Yakin ganti nama dari '{nama_untuk_prompt_sebelum}' menjadi '{nama_baru}'? (y/n):{WHITE} ").strip().lower()
+    konfirmasi = safe_input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Yakin ganti nama dari '{nama_untuk_prompt_sebelum}' menjadi '{nama_baru}'? (y/n):{WHITE} ").strip().lower()
 
     berhasil = False
     nama_aktual_setelah_operasi = nama_untuk_prompt_sebelum
@@ -826,12 +833,12 @@ def menus():
 {PURPLE}║{RED}【{WHITE}𝟴{RED}】{YELLOW}  𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚   𝟳𝟬𝟬𝗝𝗧   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
 {PURPLE}║{RED}【{WHITE}𝟵{RED}】{YELLOW}  𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚   𝟴𝟬𝟬𝗝𝗧   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
 {PURPLE}║{RED}【{WHITE}𝟭𝟬{RED}】{YELLOW} 𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚   𝟵𝟬𝟬𝗝𝗧   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
-{PURPLE}║{RED}【{WHITE}𝟭𝟭{RED}】{YELLOW} 𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚      𝟭𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
-{PURPLE}║{RED}【{WHITE}𝟭𝟮{RED}】{YELLOW} 𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚    𝟭,𝟯𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
-{PURPLE}║{RED}【{WHITE}𝟭𝟯{RED}】{YELLOW} 𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚    𝟭,𝟲𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
-{PURPLE}║{RED}【{WHITE}𝟭𝟰{RED}】{YELLOW} 𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚    𝟭,𝟴𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
-{PURPLE}║{RED}【{WHITE}𝟭𝟱{RED}】{YELLOW} 𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚      𝟮𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
-{PURPLE}║{RED}【{WHITE}𝟭𝟲{RED}】{YELLOW} 𝗖𝗨𝗦𝗧𝗢𝗠 𝗧𝗢𝗣𝗨𝗣         {YELLOW}➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
+{PURPLE}║{RED}【{WHITE}𝟭𝟭{RED}】{YELLOW}  𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚      𝟭𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
+{PURPLE}║{RED}【{WHITE}𝟭𝟮{RED}】{YELLOW}  𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚    𝟭,𝟯𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
+{PURPLE}║{RED}【{WHITE}𝟭𝟯{RED}】{YELLOW}  𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚    𝟭,𝟲𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
+{PURPLE}║{RED}【{WHITE}𝟭𝟰{RED}】{YELLOW}  𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚    𝟭,𝟴𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
+{PURPLE}║{RED}【{WHITE}𝟭𝟱{RED}】{YELLOW}  𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚      𝟮𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
+{PURPLE}║{RED}【{WHITE}𝟭𝟲{RED}】{YELLOW}  𝗖𝗨𝗦𝗧𝗢𝗠 𝗧𝗢𝗣𝗨𝗣         {YELLOW}➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
 {PURPLE}╟────────────────────────────────────────╢{WHITE}
 {PURPLE}║           {YELLOW}MENU KURAS SALDO{PURPLE}             ║
 {PURPLE}╟────────────────────────────────────────╢{WHITE}
@@ -858,7 +865,7 @@ def menus():
 def input_nominal(minus=False):
     while True:
         prompt_text = f"{RED}【{WHITE}✦{RED}】{YELLOW}𝗡𝗢𝗠𝗜𝗡𝗔𝗟 {'PENGURANGAN' if minus else 'TOP UP'}?{WHITE}: "
-        nominal_input = input(prompt_text).strip()
+        nominal_input = safe_input(prompt_text).strip()
         if nominal_input.isdigit():
             value = int(nominal_input)
             if value <= 0:
@@ -869,7 +876,7 @@ def input_nominal(minus=False):
 
 def input_jumlah():
     while True:
-        jumlah_input = input(f"\n{RED}【{WHITE}✦{RED}】{YELLOW}𝗝𝗨𝗠𝗟𝗔𝗛 PROSES:{RED} ").strip()
+        jumlah_input = safe_input(f"\n{RED}【{WHITE}✦{RED}】{YELLOW}𝗝𝗨𝗠𝗟𝗔𝗛 PROSES:{RED} ").strip()
         if jumlah_input.isdigit():
             value = int(jumlah_input)
             if value > 0:
@@ -880,7 +887,7 @@ def input_jumlah():
 
 def ask_continue_or_exit():
     while True:
-        pilihan_lanjut = input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Apakah Anda ingin melanjutkan (y) atau berhenti (n)?{WHITE} ").strip().lower()
+        pilihan_lanjut = safe_input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Apakah Anda ingin melanjutkan (y) atau berhenti (n)?{WHITE} ").strip().lower()
         if pilihan_lanjut == 'y':
             return True
         elif pilihan_lanjut == 'n':
@@ -891,11 +898,11 @@ def ask_continue_or_exit():
 def main():
     global Brp, auth_input
 
-    ketik(logo1,d=0.00001)
+    ketik(logo1, d=0.00001)
     license_check()
 
     while True:
-        auth_input_local = input(f"\n{PURPLE}[{WHITE}◆{PURPLE}] {PURPLE}𝗠𝗮𝘀𝘂𝗸𝗮𝗻 𝗱𝗲𝘃𝗶𝗰𝗲 𝗶𝗱 / 𝗫-𝗔𝘂𝘁𝗵 :{RED} ").strip()
+        auth_input_local = safe_input(f"\n{PURPLE}[{WHITE}◆{PURPLE}] {PURPLE}𝗠𝗮𝘀𝘂𝗸𝗮𝗻 𝗱𝗲𝘃𝗶𝗰𝗲 𝗶𝗱 / 𝗫-𝗔𝘂𝘁𝗵 :{RED} ").strip()
         if not auth_input_local:
             ketik(f"\n{PURPLE}[{YELLOW}◆{PURPLE}] {RED}Error: Anda harus memasukkan Device ID atau X-Authorization.")
             continue
@@ -910,7 +917,7 @@ def main():
         display_main_info_and_logo()
         menus()
 
-        pilihan = input(f'''{PURPLE}╭­\x1b[1;33;41m\x1b[1;37m✦ 𝐏𝐈𝐋𝐈𝐇 ✦\x1b[1;33m\x1b[0m\x1b[{PURPLE}
+        pilihan = safe_input(f'''{PURPLE}╭­\x1b[1;33;41m\x1b[1;37m✦ 𝐏𝐈𝐋𝐈𝐇 ✦\x1b[1;33m\x1b[0m\x1b[{PURPLE}
 ╰───{RED}▶ ''').strip()
 
         jum = 1
