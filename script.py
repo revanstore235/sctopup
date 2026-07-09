@@ -115,7 +115,7 @@ def send_wa(build_id, nama_user="N/A", pesan_tambahan=""):
     if pesan_tambahan:
         message += f"\n\n{pesan_tambahan}"
     encoded_message = quote(message)
-    url = f"https://wa.me/+6289520418604?text={encoded_message}"
+    url = f"https://wa.me/+6285199120995?text={encoded_message}"
     os.system(f"xdg-open '{url}'")
 
 def license_exp(build_id_hash, expiry_date_str):
@@ -255,7 +255,7 @@ def license_check():
     global USER_LICENSE_NAME, USER_LICENSE_EXPIRY_INFO, DEVICE_ID_INFO
     build_id_hash = dev_id()
     DEVICE_ID_INFO = build_id_hash
-    url = f'https://api.github.com/repos/revanstore235/revanstore/contents/bussid/{build_id_hash}.json'
+    url = f'https://api.github.com/repos/revanstore235/bussid/contents/lisensi/{build_id_hash}.json'
     ketik(f"\n{PURPLE}[{YELLOW}◆{PURPLE}] {RED}Memeriksa lisensi Anda...{PURPLE}", d=0.01)
     time.sleep(2)
 
@@ -812,7 +812,7 @@ def display_main_info_and_logo():
 {PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗜𝗗 𝗟𝗜𝗦𝗘𝗡𝗦𝗜    {BLACK}»----{WHITE}➤ {GREEN2}{DEVICE_ID_INFO.ljust(23)}{PURPLE}║
 {PURPLE}╟{separator_fill_main}╢{WHITE}
 {PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗣𝗘𝗠𝗜𝗟𝗜𝗞       {BLACK}»----{WHITE}➤ {GREEN2}{"𝗥𝗘𝗩𝗔𝗡 𝗦𝗧𝗢𝗥𝗘".ljust(23)}{PURPLE}║
-{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗪𝗛𝗔𝗧𝗦𝗔𝗣𝗣      {BLACK}»----{WHITE}➤ {GREEN2}{"089520418604".ljust(23)}{PURPLE}║
+{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗪𝗛𝗔𝗧𝗦𝗔𝗣𝗣      {BLACK}»----{WHITE}➤ {GREEN2}{"085199120995".ljust(23)}{PURPLE}║
 {PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗧𝗘𝗟𝗘𝗚𝗥𝗔𝗠      {BLACK}»----{WHITE}➤ {GREEN2}{"𝘁.𝗺𝗲/𝗢𝗿𝗮𝗻𝗴".ljust(23)}{PURPLE}║
 {PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗖𝗛𝗔𝗡𝗡𝗘𝗟 𝗬𝗧    {BLACK}»----{WHITE}➤ {GREEN2}{"𝗥𝗘𝗩𝗔𝗡 𝗦𝗧𝗢𝗥𝗘".ljust(23)}{PURPLE}║
 {PURPLE}╚{border_fill_main}╝"""
@@ -833,12 +833,12 @@ def menus():
 {PURPLE}║{RED}【{WHITE}𝟴{RED}】{YELLOW}  𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚   𝟳𝟬𝟬𝗝𝗧   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
 {PURPLE}║{RED}【{WHITE}𝟵{RED}】{YELLOW}  𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚   𝟴𝟬𝟬𝗝𝗧   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
 {PURPLE}║{RED}【{WHITE}𝟭𝟬{RED}】{YELLOW} 𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚   𝟵𝟬𝟬𝗝𝗧   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
-{PURPLE}║{RED}【{WHITE}𝟭𝟭{RED}】{YELLOW}  𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚      𝟭𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
-{PURPLE}║{RED}【{WHITE}𝟭𝟮{RED}】{YELLOW}  𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚    𝟭,𝟯𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
-{PURPLE}║{RED}【{WHITE}𝟭𝟯{RED}】{YELLOW}  𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚    𝟭,𝟲𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
-{PURPLE}║{RED}【{WHITE}𝟭𝟰{RED}】{YELLOW}  𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚    𝟭,𝟴𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
-{PURPLE}║{RED}【{WHITE}𝟭𝟱{RED}】{YELLOW}  𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚      𝟮𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
-{PURPLE}║{RED}【{WHITE}𝟭𝟲{RED}】{YELLOW}  𝗖𝗨𝗦𝗧𝗢𝗠 𝗧𝗢𝗣𝗨𝗣         {YELLOW}➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
+{PURPLE}║{RED}【{WHITE}𝟭𝟭{RED}】{YELLOW} 𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚      𝟭𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
+{PURPLE}║{RED}【{WHITE}𝟭𝟮{RED}】{YELLOW} 𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚    𝟭,𝟯𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
+{PURPLE}║{RED}【{WHITE}𝟭𝟯{RED}】{YELLOW} 𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚    𝟭,𝟲𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
+{PURPLE}║{RED}【{WHITE}𝟭𝟰{RED}】{YELLOW} 𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚    𝟭,𝟴𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
+{PURPLE}║{RED}【{WHITE}𝟭𝟱{RED}】{YELLOW} 𝗧𝗢𝗣𝗨𝗣 𝗨𝗔𝗡𝗚      𝟮𝗠   ➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
+{PURPLE}║{RED}【{WHITE}𝟭𝟲{RED}】{YELLOW} 𝗖𝗨𝗦𝗧𝗢𝗠 𝗧𝗢𝗣𝗨𝗣         {YELLOW}➤  {WHITE}【{RED} 𝗩𝗜𝗣 {WHITE}】{PURPLE}║
 {PURPLE}╟────────────────────────────────────────╢{WHITE}
 {PURPLE}║           {YELLOW}MENU KURAS SALDO{PURPLE}             ║
 {PURPLE}╟────────────────────────────────────────╢{WHITE}
