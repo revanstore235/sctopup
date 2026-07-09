@@ -10,23 +10,14 @@ NC='\033[0m'
 
 loading() {
     local message=$1
-    local frames=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")
     local percent=0
     
     while [ $percent -le 100 ]; do
-        local i=$(( percent % 10 ))
-        printf "\r  ${CYAN}${frames[$i]}${NC} ${WHITE}%s${NC} ${PURPLE}[${NC}" "$message"
-        local filled=$(( percent / 2 ))
-        local empty=$(( 50 - filled ))
-        printf "${GREEN}%${filled}s${NC}" | tr ' ' '█'
-        printf "${RED}%${empty}s${NC}" | tr ' ' '░'
-        printf "${PURPLE}]${NC} ${YELLOW}%d%%${NC}" "$percent"
-        sleep 0.02
+        printf "\r  ${CYAN}[${NC} ${WHITE}%s${NC} ${CYAN}]${NC} ${GREEN}%d%%${NC}" "$message" "$percent"
+        sleep 0.03
         ((percent+=2))
     done
-    printf "\r  ${GREEN}✓${NC} ${WHITE}%s${NC} ${PURPLE}[${GREEN}" "$message"
-    printf '%50s' | tr ' ' '█'
-    printf "${PURPLE}]${NC} ${GREEN}100%%${NC}\n"
+    printf "\r  ${GREEN}[✓] %s - 100%%${NC}\n" "$message"
 }
 
 check_command() {
@@ -96,7 +87,7 @@ fi
 
 echo -e "${PURPLE}  ▶ Download script...${NC}\n"
 
-GITHUB_RAW="https://raw.githubusercontent.com/revanstore235/sctopup/main/script.py"
+GITHUB_RAW="https://raw.githubusercontent.com/revanstore235/bussid/main/script.py"
 
 curl -fsSL "$GITHUB_RAW" -o script.py >/dev/null 2>&1 &
 loading "Download script.py"
