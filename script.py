@@ -11,11 +11,11 @@ from urllib.parse import quote
 import re
 
 WHITE  = '\x1b[1;97m'
-YELLOW = '\x1b[38;5;226m'
-RED    = '\x1b[38;5;196m'
+YELLOW  = '\x1b[38;5;226m'
+RED  = '\x1b[38;5;196m'
 BLACK  = '\x1b[38;5;8m'
-GREEN  = '\x1b[38;5;51m'
-GREEN2 = '\x1b[38;5;46m'
+GREEN = '\x1b[38;5;51m'
+green = '\x1b[38;5;46m'
 PURPLE = '\x1b[38;5;165m'
 
 os.system('clear')
@@ -44,13 +44,6 @@ logo1 = f"""
 
 _ketik_active = True
 
-def safe_input(prompt=""):
-    try:
-        return input(prompt)
-    except (EOFError, KeyboardInterrupt):
-        print(f"\n{RED}Input dibatalkan. Program berhenti.{WHITE}")
-        sys.exit(0)
-
 def ketik(c, d=0.00003):
     global _ketik_active
     if not _ketik_active:
@@ -61,10 +54,10 @@ def ketik(c, d=0.00003):
             sys.stdout.write(e)
             sys.stdout.flush()
             time.sleep(d)
-    except (KeyboardInterrupt, EOFError):
-        print(f"\n{RED}Proses dihentikan. Keluar...{PURPLE}")
+    except KeyboardInterrupt:
+        print(f"\n{RED}Proses dihentikan oleh pengguna (Ctrl+C). Keluar...{PURPLE}")
         _ketik_active = False
-        sys.exit(0)
+        raise
 
 def get_visual_length(s):
     return len(re.sub(r'\x1b\[[0-9;]*[mK]', '', s))
@@ -115,7 +108,7 @@ def send_wa(build_id, nama_user="N/A", pesan_tambahan=""):
     if pesan_tambahan:
         message += f"\n\n{pesan_tambahan}"
     encoded_message = quote(message)
-    url = f"https://wa.me/+6285199120995?text={encoded_message}"
+    url = f"https://wa.me/+6289520418604?text={encoded_message}"
     os.system(f"xdg-open '{url}'")
 
 def license_exp(build_id_hash, expiry_date_str):
@@ -151,19 +144,19 @@ def license_exp(build_id_hash, expiry_date_str):
 {PURPLE}║  {YELLOW}Jangan khawatir, perpanjang lisensi Anda sekarang!{PURPLE} ║
 {PURPLE}║               {YELLOW}Pilih paket di bawah ini:{PURPLE}             ║
 {PURPLE}╟─────────────────────────────────────────────────────╢{WHITE}
-{PURPLE}║ {RED}【{WHITE}1{RED}】 {YELLOW}Perpanjang 1 MINGGU   {GREEN2}Rp 10.000{PURPLE}               ║
-{PURPLE}║ {RED}【{WHITE}2{RED}】 {YELLOW}Perpanjang 2 MINGGU   {GREEN2}Rp 25.000{PURPLE}               ║
-{PURPLE}║ {RED}【{WHITE}3{RED}】 {YELLOW}Perpanjang 1 BULAN    {GREEN2}Rp 35.000{PURPLE}               ║
-{PURPLE}║ {RED}【{WHITE}4{RED}】 {YELLOW}Perpanjang 2 BULAN    {GREEN2}Rp 40.000{PURPLE}               ║
-{PURPLE}║ {RED}【{WHITE}5{RED}】 {YELLOW}Perpanjang 3 BULAN    {GREEN2}Rp 55.000{PURPLE}               ║
-{PURPLE}║ {RED}【{WHITE}6{RED}】 {YELLOW}Lisensi PERMANEN      {GREEN2}Rp 80.000{PURPLE}               ║
+{PURPLE}║ {RED}【{WHITE}1{RED}】 {YELLOW}Perpanjang 1 MINGGU   {green}Rp 10.000{PURPLE}               ║
+{PURPLE}║ {RED}【{WHITE}2{RED}】 {YELLOW}Perpanjang 2 MINGGU   {green}Rp 25.000{PURPLE}               ║
+{PURPLE}║ {RED}【{WHITE}3{RED}】 {YELLOW}Perpanjang 1 BULAN    {green}Rp 35.000{PURPLE}               ║
+{PURPLE}║ {RED}【{WHITE}4{RED}】 {YELLOW}Perpanjang 2 BULAN    {green}Rp 40.000{PURPLE}               ║
+{PURPLE}║ {RED}【{WHITE}5{RED}】 {YELLOW}Perpanjang 3 BULAN    {green}Rp 55.000{PURPLE}               ║
+{PURPLE}║ {RED}【{WHITE}6{RED}】 {YELLOW}Lisensi PERMANEN      {green}Rp 80.000{PURPLE}               ║
 {PURPLE}╟─────────────────────────────────────────────────────╢{WHITE}
 {PURPLE}║ {RED}【{WHITE}0{RED}】 {YELLOW}Keluar{PURPLE}                                        ║
 {PURPLE}╚═════════════════════════════════════════════════════╝
 """
         ketik(menu_perpanjangan, d=0.0001)
         
-        pilihan = safe_input(f'''{PURPLE}╭­\x1b[1;33;41m\x1b[1;37m✦ PILIH PAKET ✦\x1b[1;33m\x1b[0m\x1b[{PURPLE}
+        pilihan = input(f'''{PURPLE}╭­\x1b[1;33;41m\x1b[1;37m✦ PILIH PAKET ✦\x1b[1;33m\x1b[0m\x1b[{PURPLE}
 ╰───{RED}▶ ''').strip()
         
         if pilihan in ["1", "2", "3", "4", "5", "6"]:
@@ -196,19 +189,19 @@ def license_exp(build_id_hash, expiry_date_str):
 {PURPLE}====================================================={WHITE}
 {YELLOW} ★★★ INSTRUKSI SELANJUTNYA ★★★ {WHITE}
 
-{GREEN2}Setelah berhasil melakukan pembayaran,{WHITE}
-{GREEN2}mohon konfirmasi kepada admin untuk pengaktifan lisensi Anda,{WHITE}
-{GREEN2}Dan Mohon kirimkan bukti pembayaran kepada admin.{WHITE}
+{green}Setelah berhasil melakukan pembayaran,{WHITE}
+{green}mohon konfirmasi kepada admin untuk pengaktifan lisensi Anda,{WHITE}
+{green}Dan Mohon kirimkan bukti pembayaran kepada admin.{WHITE}
 {PURPLE}====================================================={WHITE}"""
             ketik(info_pembayaran, d=0.001)
             
             while True:
-                print(f"\n{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Ketik '{GREEN2}1{YELLOW}' untuk Konfirmasi Pembayaran ke Admin,")
-                konfirmasi = safe_input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Ketik '{RED}2{YELLOW}' untuk Kembali memilih pilihan paket Perpanjangan: {WHITE}").strip()
+                print(f"\n{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Ketik '{green}1{YELLOW}' untuk Konfirmasi Pembayaran ke Admin,")
+                konfirmasi = input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Ketik '{RED}2{YELLOW}' untuk Kembali memilih pilihan paket Perpanjangan: {WHITE}").strip()
                 
                 if konfirmasi == '1':
                     pesan_wa = f"Saya ingin konfirmasi perpanjangan lisensi dengan detail:\nPaket: {selected_paket}"
-                    ketik(f"\n{GREEN2}Terima kasih! Anda akan segera dialihkan ke Apk WhatsApp untuk menkonfirmasi Pembayaran Kepada Admin.", d=0.01)
+                    ketik(f"\n{green}Terima kasih! Anda akan segera dialihkan ke Apk WhatsApp untuk menkonfirmasi Pembayaran Kepada Admin.", d=0.01)
                     
                     for i in range(10, 0, -1):
                         sys.stdout.write(f"\r{YELLOW}Membuka WhatsApp dalam {i} detik...{WHITE}   ")
@@ -237,11 +230,11 @@ def license_exp(build_id_hash, expiry_date_str):
 
 def license_enol(build_id_hash):
     ketik(f"{PURPLE}[{YELLOW}◆{PURPLE}] {RED}Lisensi tidak terdaftar!{PURPLE}")
-    ketik(f"{PURPLE}[{YELLOW}◆{PURPLE}] {RED}UserID: {GREEN2}{build_id_hash}{PURPLE}")
+    ketik(f"{PURPLE}[{YELLOW}◆{PURPLE}] {RED}UserID: {green}{build_id_hash}{PURPLE}")
 
     nama_pengguna_lisensi = ""
     while not nama_pengguna_lisensi:
-        nama_pengguna_lisensi = safe_input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Masukkan Nama Anda untuk permintaan lisensi:{WHITE} ").strip()
+        nama_pengguna_lisensi = input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Masukkan Nama Anda untuk permintaan lisensi:{WHITE} ").strip()
         if not nama_pengguna_lisensi:
             ketik(f"{RED}Nama tidak boleh kosong. Silakan masukkan nama Anda.{WHITE}")
 
@@ -255,7 +248,7 @@ def license_check():
     global USER_LICENSE_NAME, USER_LICENSE_EXPIRY_INFO, DEVICE_ID_INFO
     build_id_hash = dev_id()
     DEVICE_ID_INFO = build_id_hash
-    url = f'https://api.github.com/repos/revanstore235/revanstore/contents/lisensi/{build_id_hash}.json'
+    url = f'https://api.github.com/repos/revanstore235/sctopup/contents/lisensi/{build_id_hash}.json'
     ketik(f"\n{PURPLE}[{YELLOW}◆{PURPLE}] {RED}Memeriksa lisensi Anda...{PURPLE}", d=0.01)
     time.sleep(2)
 
@@ -287,12 +280,12 @@ def license_check():
                  return
 
         USER_LICENSE_NAME = name
-        ketik(f"{PURPLE}[{YELLOW}◆{PURPLE}] {RED}Hallo {GREEN2}{name}{RED}", d=0.01)
+        ketik(f"{PURPLE}[{YELLOW}◆{PURPLE}] {RED}Hallo {green}{name}{RED}", d=0.01)
         if expiry_date_str:
             days_left = exp_date(expiry_date_str)
             if days_left > 0:
                 USER_LICENSE_EXPIRY_INFO = f"{expiry_date_str} ({days_left} hari tersisa)"
-                ketik(f"{PURPLE}[{YELLOW}◆{PURPLE}] {RED}Anda adalah {GREEN2}{role.upper()}{PURPLE}!", d=0.002)
+                ketik(f"{PURPLE}[{YELLOW}◆{PURPLE}] {RED}Anda adalah {green}{role.upper()}{PURPLE}!", d=0.002)
                 time.sleep(2)
             else:
                 if days_left == 0:
@@ -300,7 +293,7 @@ def license_check():
                     print(f"{PURPLE}[{YELLOW}◆{PURPLE}] {RED}Lisensi Anda habis {YELLOW}hari ini{PURPLE}! Silakan perbarui segera.{PURPLE}")
                 else:
                     USER_LICENSE_EXPIRY_INFO = f"Kedaluwarsa pada {expiry_date_str} ({abs(days_left)} hari yang lalu)"
-                    print(f"{PURPLE}[{YELLOW}◆{PURPLE}] {RED}Lisensi Anda telah kedaluwarsa {GREEN2}{abs(days_left)} {RED}hari yang lalu!")
+                    print(f"{PURPLE}[{YELLOW}◆{PURPLE}] {RED}Lisensi Anda telah kedaluwarsa {green}{abs(days_left)} {RED}hari yang lalu!")
                 time.sleep(2)
                 license_exp(build_id_hash, expiry_date_str)
         else:
@@ -376,6 +369,7 @@ def mxx_display_info():
     nama_akun, saldo_akun = mxx_fetch_info()
     if nama_akun is not None and saldo_akun is not None:
         times = time.strftime('%H:%M:%S', time.localtime())
+
         border_char_mxx = "═"
         border_width_mxx = 33
 
@@ -431,7 +425,7 @@ def tampilkan_detail_transaksi(nama_akun_display, nominal_transaksi, saldo_sebel
         tgl_str = f"{hari_id}, {sekarang.day} {bulan_id} {sekarang.year}"
 
     jam_str = sekarang.strftime('%H:%M:%S')
-    status_str = f"{GREEN2}Berhasil{WHITE}" if berhasil else f"{RED}Gagal{WHITE}"
+    status_str = f"{green}Berhasil{WHITE}" if berhasil else f"{RED}Gagal{WHITE}"
     pesan = ""
 
     if jenis_transaksi_override == "Ganti Nama Akun":
@@ -443,37 +437,37 @@ def tampilkan_detail_transaksi(nama_akun_display, nominal_transaksi, saldo_sebel
 {PURPLE}========================================={WHITE}
 {YELLOW}ℹ️  Informasi {WHITE}
 
-{YELLOW}👤 Akun:{GREEN2} {akun_display_final}{WHITE}
-{YELLOW}🏷️ Jenis:{GREEN2} Ganti Nama{WHITE}
-{YELLOW}👤 Nama Sebelum:{GREEN2} {nama_sebelum_final}{WHITE}
-{YELLOW}👤 Nama Sesudah:{GREEN2} {nama_sesudah_final}{WHITE}
-{YELLOW}🕒 Jam:{GREEN2} {jam_str}{WHITE}
-{YELLOW}📅 Tgl:{GREEN2} {tgl_str}{WHITE}
+{YELLOW}👤 Akun:{green} {akun_display_final}{WHITE}
+{YELLOW}🏷️ Jenis:{green} Ganti Nama{WHITE}
+{YELLOW}👤 Nama Sebelum:{green} {nama_sebelum_final}{WHITE}
+{YELLOW}👤 Nama Sesudah:{green} {nama_sesudah_final}{WHITE}
+{YELLOW}🕒 Jam:{green} {jam_str}{WHITE}
+{YELLOW}📅 Tgl:{green} {tgl_str}{WHITE}
 {YELLOW}📈 Status: {status_str}
 {YELLOW}ℹ️  Informasi Penting:{WHITE}
-{YELLOW}╰┈➤ {GREEN2}Buka Bussid Nya Mas{WHITE}
-{YELLOW}╰┈➤ {GREEN2}Cek Apakah Nama nya sudah tergantikan?{WHITE}
-{YELLOW}╰┈➤ {GREEN2}Jika Akun Bussid nya terputus Login Ke akun Lama(Ganti Akun).{WHITE}
-{YELLOW}╰┈➤ {GREEN2}Jangan Sambungkan Biar akun Bussid nya tidak hilang{WHITE}
+{YELLOW}╰┈➤ {green}Buka Bussid Nya Mas{WHITE}
+{YELLOW}╰┈➤ {green}Cek Apakah Nama nya sudah tergantikan?{WHITE}
+{YELLOW}╰┈➤ {green}Jika Akun Bussid nya terputus Login Ke akun Lama(Ganti Akun).{WHITE}
+{YELLOW}╰┈➤ {green}Jangan Sambungkan Biar akun Bussid nya tidak hilang{WHITE}
 {PURPLE}========================================={WHITE}"""
     elif jenis_transaksi_override == "Hapus Akun":
         info_penting_hapus_akun = ""
         if berhasil:
-            info_penting_hapus_akun = f"""{YELLOW}╰┈➤ {GREEN2}Akun Anda telah berhasil diproses untuk penghapusan.{WHITE}
-{YELLOW}╰┈➤ {GREEN2}Anda tidak akan bisa login lagi dengan akun ini.{WHITE}
-{YELLOW}╰┈➤ {GREEN2}Silakan buat akun baru atau login dengan akun lain jika diperlukan.{WHITE}"""
+            info_penting_hapus_akun = f"""{YELLOW}╰┈➤ {green}Akun Anda telah berhasil diproses untuk penghapusan.{WHITE}
+{YELLOW}╰┈➤ {green}Anda tidak akan bisa login lagi dengan akun ini.{WHITE}
+{YELLOW}╰┈➤ {green}Silakan buat akun baru atau login dengan akun lain jika diperlukan.{WHITE}"""
         else:
             info_penting_hapus_akun = f"""{YELLOW}╰┈➤ {RED}Proses penghapusan akun tidak berhasil atau dibatalkan.{WHITE}
-{YELLOW}╰┈➤ {GREEN2}Akun Anda seharusnya masih dapat diakses jika tidak dihapus.{WHITE}
-{YELLOW}╰┈➤ {GREEN2}Jika Anda membatalkan, tidak ada perubahan pada akun Anda.{WHITE}"""
+{YELLOW}╰┈➤ {green}Akun Anda seharusnya masih dapat diakses jika tidak dihapus.{WHITE}
+{YELLOW}╰┈➤ {green}Jika Anda membatalkan, tidak ada perubahan pada akun Anda.{WHITE}"""
         pesan = f"""
 {PURPLE}========================================={WHITE}
 {YELLOW}ℹ️  Informasi {WHITE}
 
-{YELLOW}👤 Akun:{GREEN2} {nama_akun_display if nama_akun_display else "N/A"}{WHITE}
-{YELLOW}🏷️ Jenis:{GREEN2} Hapus Akun{WHITE}
-{YELLOW}🕒 Jam:{GREEN2} {jam_str}{WHITE}
-{YELLOW}📅 Tgl:{GREEN2} {tgl_str}{WHITE}
+{YELLOW}👤 Akun:{green} {nama_akun_display if nama_akun_display else "N/A"}{WHITE}
+{YELLOW}🏷️ Jenis:{green} Hapus Akun{WHITE}
+{YELLOW}🕒 Jam:{green} {jam_str}{WHITE}
+{YELLOW}📅 Tgl:{green} {tgl_str}{WHITE}
 {YELLOW}📈 Status: {status_str}
 {YELLOW}ℹ️  Informasi Penting:{WHITE}
 {info_penting_hapus_akun}
@@ -517,19 +511,19 @@ def tampilkan_detail_transaksi(nama_akun_display, nominal_transaksi, saldo_sebel
 {PURPLE}========================================={WHITE}
 {YELLOW}ℹ️  INFORMASI {WHITE}
 
-{YELLOW}👤 Akun:{GREEN2} {nama_akun_final}{WHITE}
-{YELLOW}🏷️ Jenis:{GREEN2} {jenis_transaksi_str_default}{WHITE}
-{YELLOW}💰 Nominal:{GREEN2} Rp {nominal_display}{WHITE}
-{YELLOW}💰 Saldo Sebelum:{GREEN2} Rp {saldo_sebelum_display}{WHITE}
-{YELLOW}💰 Saldo Sesudah:{GREEN2} Rp {saldo_setelah_display}{WHITE}
-{YELLOW}🕒 Jam:{GREEN2} {jam_str}{WHITE}
-{YELLOW}📅 Tgl:{GREEN2} {tgl_str}{WHITE}
+{YELLOW}👤 Akun:{green} {nama_akun_final}{WHITE}
+{YELLOW}🏷️ Jenis:{green} {jenis_transaksi_str_default}{WHITE}
+{YELLOW}💰 Nominal:{green} Rp {nominal_display}{WHITE}
+{YELLOW}💰 Saldo Sebelum:{green} Rp {saldo_sebelum_display}{WHITE}
+{YELLOW}💰 Saldo Sesudah:{green} Rp {saldo_setelah_display}{WHITE}
+{YELLOW}🕒 Jam:{green} {jam_str}{WHITE}
+{YELLOW}📅 Tgl:{green} {tgl_str}{WHITE}
 {YELLOW}📈 Status: {status_str}
 {YELLOW}ℹ️  Informasi Penting:{WHITE}
-{YELLOW}╰┈➤ {GREEN2}Buka Bussid Nya Mas{WHITE}
-{YELLOW}╰┈➤ {GREEN2}Ss Kan Di Garasi Ketik Done{WHITE}
-{YELLOW}╰┈➤ {GREEN2}Jika Akun Bussid nya terputus Login Ke akun Lama(Ganti Akun).{WHITE}
-{YELLOW}╰┈➤ {GREEN2}Jangan Sambungkan Biar Uang Bussid nya tidak hilang{WHITE}
+{YELLOW}╰┈➤ {green}Buka Bussid Nya Mas{WHITE}
+{YELLOW}╰┈➤ {green}Ss Kan Di Garasi Ketik Done{WHITE}
+{YELLOW}╰┈➤ {green}Jika Akun Bussid nya terputus Login Ke akun Lama(Ganti Akun).{WHITE}
+{YELLOW}╰┈➤ {green}Jangan Sambungkan Biar Uang Bussid nya tidak hilang{WHITE}
 {PURPLE}========================================={WHITE}"""
     ketik(pesan, d=0.0001)
 
@@ -632,7 +626,7 @@ def kuras_semua_uang():
         return
 
     if saldo_awal == 0:
-        ketik(f"\n{GREEN2}【{WHITE}✦{GREEN2}】{YELLOW}Uang sudah habis (0 RP). Tidak ada yang perlu dikuras.{WHITE}", d=0.003)
+        ketik(f"\n{green}【{WHITE}✦{green}】{YELLOW}Uang sudah habis (0 RP). Tidak ada yang perlu dikuras.{WHITE}", d=0.003)
         tampilkan_detail_transaksi(nama_akun_awal, 0, saldo_awal, saldo_awal, True, jenis_transaksi_override="Kuras Semua Uang (Saldo Sudah 0)")
         return
 
@@ -650,7 +644,7 @@ def kuras_semua_uang():
         nama_akun_setelah, saldo_setelah = mxx_fetch_info()
 
         if 'Error' not in result_kuras:
-            ketik(f"\n{RED}【{WHITE}✦{RED}】{GREEN2}Semua uang ({saldo_awal:,} RP) berhasil dikuras!", d=0.003)
+            ketik(f"\n{RED}【{WHITE}✦{RED}】{green}Semua uang ({saldo_awal:,} RP) berhasil dikuras!", d=0.003)
             tampilkan_detail_transaksi(nama_akun_setelah if nama_akun_setelah else nama_akun_awal, -saldo_awal, saldo_awal, saldo_setelah if saldo_setelah is not None else 0, True, jenis_transaksi_override="Kuras Semua Uang")
         else:
             error_msg = result_kuras.get('Error', {}).get('Message', 'Error tidak diketahui')
@@ -667,7 +661,7 @@ def HapusAkun():
     global headers
     nama_akun_sebelum_fetch, saldo_sebelum_fetch = mxx_fetch_info()
 
-    konfirmasi = safe_input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Apakah Anda yakin ingin menghapus akun '{nama_akun_sebelum_fetch if nama_akun_sebelum_fetch else 'ini'}'? Tindakan ini tidak dapat dibatalkan. (y/n):{WHITE} ").strip().lower()
+    konfirmasi = input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Apakah Anda yakin ingin menghapus akun '{nama_akun_sebelum_fetch if nama_akun_sebelum_fetch else 'ini'}'? Tindakan ini tidak dapat dibatalkan. (y/n):{WHITE} ").strip().lower()
 
     berhasil = False
     if konfirmasi == 'y':
@@ -682,7 +676,7 @@ def HapusAkun():
             response.raise_for_status()
             result = response.json()
             if 'Error' not in result:
-                ketik(f"\n{RED}【{WHITE}✦{RED}】{GREEN2}AKUN BERHASIL DIHAPUS (jika CloudScript berhasil)‼️{WHITE}", d=0.003)
+                ketik(f"\n{RED}【{WHITE}✦{RED}】{green}AKUN BERHASIL DIHAPUS (jika CloudScript berhasil)‼️{WHITE}", d=0.003)
                 berhasil = True
             else:
                 error_msg = result.get('Error', {}).get('Message', 'Gagal menghapus akun')
@@ -707,7 +701,7 @@ def ganti_nama_akun():
     nama_akun_sebelum_fetch, _ = mxx_fetch_info()
     nama_untuk_prompt_sebelum = nama_akun_sebelum_fetch if nama_akun_sebelum_fetch else "[Nama Saat Ini Tidak Terdeteksi]"
 
-    nama_baru = safe_input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Masukkan nama akun baru:{WHITE} ").strip()
+    nama_baru = input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Masukkan nama akun baru:{WHITE} ").strip()
     if not nama_baru:
         ketik(f"{RED}Nama akun tidak boleh kosong.{WHITE}")
         tampilkan_detail_transaksi(
@@ -719,7 +713,7 @@ def ganti_nama_akun():
         )
         return
 
-    konfirmasi = safe_input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Yakin ganti nama dari '{nama_untuk_prompt_sebelum}' menjadi '{nama_baru}'? (y/n):{WHITE} ").strip().lower()
+    konfirmasi = input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Yakin ganti nama dari '{nama_untuk_prompt_sebelum}' menjadi '{nama_baru}'? (y/n):{WHITE} ").strip().lower()
 
     berhasil = False
     nama_aktual_setelah_operasi = nama_untuk_prompt_sebelum
@@ -735,7 +729,7 @@ def ganti_nama_akun():
             )
             response.raise_for_status()
             if response.status_code == 200:
-                ketik(f"{GREEN2}Nama akun berhasil diubah menjadi '{nama_baru}'.{WHITE}")
+                ketik(f"{green}Nama akun berhasil diubah menjadi '{nama_baru}'.{WHITE}")
                 berhasil = True
                 nama_aktual_setelah_operasi = nama_baru
             else:
@@ -794,7 +788,7 @@ def display_main_info_and_logo():
 
     expiry_line_2_content = ""
     if expiry_days_part_raw:
-        line_payload_str = f"{WHITE}{' ' *19}{BLACK}»----{WHITE}➤ {GREEN2}{expiry_days_part_raw}"
+        line_payload_str = f"{WHITE}{' ' *19}{BLACK}»----{WHITE}➤ {green}{expiry_days_part_raw}"
         v_payload = get_visual_length(line_payload_str)
         padding_needed = actual_content_width - v_payload
         padding_str = " " * max(0, padding_needed)
@@ -806,15 +800,15 @@ def display_main_info_and_logo():
 
     info_pembuat = f"""
 {PURPLE}╔{border_fill_main}╗
-{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗡𝗔𝗠𝗔          {BLACK}»----{WHITE}➤ {GREEN2}{USER_LICENSE_NAME.ljust(23)}{PURPLE}║
-{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗞𝗘𝗗𝗔𝗟𝗨𝗔𝗥𝗦𝗔    {BLACK}»----{WHITE}➤ {GREEN2}{expiry_date_part.ljust(23)}{PURPLE}║
+{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗡𝗔𝗠𝗔          {BLACK}»----{WHITE}➤ {green}{USER_LICENSE_NAME.ljust(23)}{PURPLE}║
+{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗞𝗘𝗗𝗔𝗟𝗨𝗔𝗥𝗦𝗔    {BLACK}»----{WHITE}➤ {green}{expiry_date_part.ljust(23)}{PURPLE}║
 {expiry_line_2_str}
-{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗜𝗗 𝗟𝗜𝗦𝗘𝗡𝗦𝗜    {BLACK}»----{WHITE}➤ {GREEN2}{DEVICE_ID_INFO.ljust(23)}{PURPLE}║
+{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗜𝗗 𝗟𝗜𝗦𝗘𝗡𝗦𝗜    {BLACK}»----{WHITE}➤ {green}{DEVICE_ID_INFO.ljust(23)}{PURPLE}║
 {PURPLE}╟{separator_fill_main}╢{WHITE}
-{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗣𝗘𝗠𝗜𝗟𝗜𝗞       {BLACK}»----{WHITE}➤ {GREEN2}{"𝗥𝗘𝗩𝗔𝗡 𝗦𝗧𝗢𝗥𝗘".ljust(23)}{PURPLE}║
-{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗪𝗛𝗔𝗧𝗦𝗔𝗣𝗣      {BLACK}»----{WHITE}➤ {GREEN2}{"085199120995".ljust(23)}{PURPLE}║
-{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗧𝗘𝗟𝗘𝗚𝗥𝗔𝗠      {BLACK}»----{WHITE}➤ {GREEN2}{"𝘁.𝗺𝗲/𝗢𝗿𝗮𝗻𝗴".ljust(23)}{PURPLE}║
-{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗖𝗛𝗔𝗡𝗡𝗘𝗟 𝗬𝗧    {BLACK}»----{WHITE}➤ {GREEN2}{"𝗥𝗘𝗩𝗔𝗡 𝗦𝗧𝗢𝗥𝗘".ljust(23)}{PURPLE}║
+{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗣𝗘𝗠𝗜𝗟𝗜𝗞       {BLACK}»----{WHITE}➤ {green}{"𝗥𝗘𝗩𝗔𝗡 𝗦𝗧𝗢𝗥𝗘".ljust(23)}{PURPLE}║
+{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗪𝗛𝗔𝗧𝗦𝗔𝗣𝗣      {BLACK}»----{WHITE}➤ {green}{"089520418604".ljust(23)}{PURPLE}║
+{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗧𝗘𝗟𝗘𝗚𝗥𝗔𝗠      {BLACK}»----{WHITE}➤ {green}{"𝘁.𝗺𝗲/𝗢𝗿𝗮𝗻𝗴".ljust(23)}{PURPLE}║
+{PURPLE}║{RED}【{WHITE}✦{RED}】{YELLOW}𝗖𝗛𝗔𝗡𝗡𝗘𝗟 𝗬𝗧    {BLACK}»----{WHITE}➤ {green}{"𝗥𝗘𝗩𝗔𝗡 𝗦𝗧𝗢𝗥𝗘".ljust(23)}{PURPLE}║
 {PURPLE}╚{border_fill_main}╝"""
     ketik(info_pembuat, d=0.0001)
     mxx_display_info()
@@ -865,7 +859,7 @@ def menus():
 def input_nominal(minus=False):
     while True:
         prompt_text = f"{RED}【{WHITE}✦{RED}】{YELLOW}𝗡𝗢𝗠𝗜𝗡𝗔𝗟 {'PENGURANGAN' if minus else 'TOP UP'}?{WHITE}: "
-        nominal_input = safe_input(prompt_text).strip()
+        nominal_input = input(prompt_text).strip()
         if nominal_input.isdigit():
             value = int(nominal_input)
             if value <= 0:
@@ -876,7 +870,7 @@ def input_nominal(minus=False):
 
 def input_jumlah():
     while True:
-        jumlah_input = safe_input(f"\n{RED}【{WHITE}✦{RED}】{YELLOW}𝗝𝗨𝗠𝗟𝗔𝗛 PROSES:{RED} ").strip()
+        jumlah_input = input(f"\n{RED}【{WHITE}✦{RED}】{YELLOW}𝗝𝗨𝗠𝗟𝗔𝗛 PROSES:{RED} ").strip()
         if jumlah_input.isdigit():
             value = int(jumlah_input)
             if value > 0:
@@ -887,7 +881,7 @@ def input_jumlah():
 
 def ask_continue_or_exit():
     while True:
-        pilihan_lanjut = safe_input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Apakah Anda ingin melanjutkan (y) atau berhenti (n)?{WHITE} ").strip().lower()
+        pilihan_lanjut = input(f"{PURPLE}[{WHITE}◆{PURPLE}] {YELLOW}Apakah Anda ingin melanjutkan (y) atau berhenti (n)?{WHITE} ").strip().lower()
         if pilihan_lanjut == 'y':
             return True
         elif pilihan_lanjut == 'n':
@@ -898,11 +892,11 @@ def ask_continue_or_exit():
 def main():
     global Brp, auth_input
 
-    ketik(logo1, d=0.00001)
+    ketik(logo1,d=0.00001)
     license_check()
 
     while True:
-        auth_input_local = safe_input(f"\n{PURPLE}[{WHITE}◆{PURPLE}] {PURPLE}𝗠𝗮𝘀𝘂𝗸𝗮𝗻 𝗱𝗲𝘃𝗶𝗰𝗲 𝗶𝗱 / 𝗫-𝗔𝘂𝘁𝗵 :{RED} ").strip()
+        auth_input_local = input(f"\n{PURPLE}[{WHITE}◆{PURPLE}] {PURPLE}𝗠𝗮𝘀𝘂𝗸𝗮𝗻 𝗱𝗲𝘃𝗶𝗰𝗲 𝗶𝗱 / 𝗫-𝗔𝘂𝘁𝗵 :{RED} ").strip()
         if not auth_input_local:
             ketik(f"\n{PURPLE}[{YELLOW}◆{PURPLE}] {RED}Error: Anda harus memasukkan Device ID atau X-Authorization.")
             continue
@@ -917,7 +911,7 @@ def main():
         display_main_info_and_logo()
         menus()
 
-        pilihan = safe_input(f'''{PURPLE}╭­\x1b[1;33;41m\x1b[1;37m✦ 𝐏𝐈𝐋𝐈𝐇 ✦\x1b[1;33m\x1b[0m\x1b[{PURPLE}
+        pilihan = input(f'''{PURPLE}╭­\x1b[1;33;41m\x1b[1;37m✦ 𝐏𝐈𝐋𝐈𝐇 ✦\x1b[1;33m\x1b[0m\x1b[{PURPLE}
 ╰───{RED}▶ ''').strip()
 
         jum = 1
@@ -938,7 +932,7 @@ def main():
         ]
 
         if pilihan == "0":
-            ketik(f"\n{PURPLE}[{YELLOW}◆{PURPLE}]{GREEN2}Terima kasih telah menggunakan script ini. Sampai jumpa!{WHITE}\n", d=0.002)
+            ketik(f"\n{PURPLE}[{YELLOW}◆{PURPLE}]{green}Terima kasih telah menggunakan script ini. Sampai jumpa!{WHITE}\n", d=0.002)
             break
 
         elif pilihan in options_map:
@@ -963,7 +957,7 @@ def main():
             kuras_semua_uang()
         elif pilihan == "26":
             if HapusAkun():
-                ketik(f"\n{RED}【{WHITE}✦{RED}】{GREEN2}Proses penghapusan akun selesai.{WHITE}")
+                ketik(f"\n{RED}【{WHITE}✦{RED}】{green}Proses penghapusan akun selesai.{WHITE}")
                 ketik(f"{YELLOW}Karena akun mungkin telah dihapus, disarankan untuk keluar.{WHITE}")
                 if not ask_continue_or_exit():
                     break
@@ -979,7 +973,7 @@ def main():
             continue
 
         if not ask_continue_or_exit():
-            ketik(f"\n{PURPLE}[{YELLOW}◆{PURPLE}]{GREEN2}Terima kasih telah menggunakan script ini. Sampai jumpa!{WHITE}\n", d=0.002)
+            ketik(f"\n{PURPLE}[{YELLOW}◆{PURPLE}]{green}Terima kasih telah menggunakan script ini. Sampai jumpa!{WHITE}\n", d=0.002)
             break
 
 if __name__ == "__main__":
