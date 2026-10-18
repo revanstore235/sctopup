@@ -1,114 +1,96 @@
 #!/bin/bash
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-CYAN='\033[0;36m'
-PURPLE='\033[0;35m'
-WHITE='\033[1;97m'
-NC='\033[0m'
+M='\033[0;31m'
+H='\033[0;32m'
+K='\033[1;33m'
+B='\033[0;36m'
+U='\033[0;35m'
+P='\033[1;97m'
+N='\033[0m'
 
 loading() {
-    local message=$1
-    local percent=0
-    
-    while [ $percent -le 100 ]; do
-        printf "\r  ${CYAN}[${NC} ${WHITE}%s${NC} ${CYAN}]${NC} ${GREEN}%d%%${NC}" "$message" "$percent"
+    local msg="$1"
+    local p=0
+    while [ $p -le 100 ]; do
+        printf "\r  ${B}→${N} ${msg} ${K}%d%%${N}" "$p"
         sleep 0.03
-        ((percent+=2))
+        ((p+=3))
     done
-    printf "\r  ${GREEN}[✓] %s - 100%%${NC}\n" "$message"
+    printf "\r  ${H}✓${N} ${msg}     \n"
 }
 
-check_command() {
+ada() {
     command -v "$1" >/dev/null 2>&1
 }
 
 clear
-echo -e "\n"
-echo -e "${YELLOW}╔══════════════════════════════════════════════════╗${NC}"
-echo -e "${YELLOW}║${NC}                                                  ${YELLOW}║${NC}"
-echo -e "${YELLOW}║${NC}        ${WHITE}SCRIPT TOP UP BUSSID${NC}                      ${YELLOW}║${NC}"
-echo -e "${YELLOW}║${NC}        ${RED}v2.0${NC}                                        ${YELLOW}║${NC}"
-echo -e "${YELLOW}║${NC}                                                  ${YELLOW}║${NC}"
-echo -e "${YELLOW}╚══════════════════════════════════════════════════╝${NC}\n"
+echo ""
+echo -e "  ${P}SC TOP UP BUSSID${N} ${M}v1.0${N}"
+echo ""
 
 sleep 1
 
-DEPENDENCIES=(
-    "python3:Python 3"
-    "pip3:PIP 3"
+DEPS=(
+    "python3:Python3"
+    "pip3:PIP3"
     "git:Git"
 )
 
-MISSING=()
+KURANG=()
 
-echo -e "${PURPLE}  ▶ Mengecek dependencies...${NC}\n"
-
-for dep in "${DEPENDENCIES[@]}"; do
-    CMD="${dep%%:*}"
-    NAME="${dep##*:}"
-    
-    if check_command "$CMD"; then
-        echo -e "  ${GREEN}✓${NC} $NAME ${GREEN}tersedia${NC}"
+for d in "${DEPS[@]}"; do
+    C="${d%%:*}"
+    NM="${d##*:}"
+    if ada "$C"; then
+        echo -e "  ${H}ok${N}  $NM"
     else
-        echo -e "  ${RED}✗${NC} $NAME ${RED}tidak ditemukan${NC}"
-        MISSING+=("$CMD:$NAME")
+        echo -e "  ${M}no${N}  $NM"
+        KURANG+=("$C:$NM")
     fi
 done
 
-if [ ${#MISSING[@]} -gt 0 ]; then
-    echo -e "\n${YELLOW}  ⚠ Menginstall ${#MISSING[@]} dependencies...${NC}\n"
-    
-    for miss in "${MISSING[@]}"; do
-        CMD="${miss%%:*}"
-        NAME="${miss##*:}"
-        
-        case $CMD in
+if [ ${#KURANG[@]} -gt 0 ]; then
+    echo ""
+    for x in "${KURANG[@]}"; do
+        C="${x%%:*}"
+        case $C in
             "python3")
                 pkg install python -y >/dev/null 2>&1 &
-                loading "Install Python 3"
+                loading "Python3"
                 ;;
             "pip3")
                 pkg install python-pip -y >/dev/null 2>&1 &
-                loading "Install PIP 3"
+                loading "PIP3"
                 ;;
             "git")
                 pkg install git -y >/dev/null 2>&1 &
-                loading "Install Git"
+                loading "Git"
                 ;;
         esac
     done
-    
-    echo -e "\n${GREEN}  ✓ Dependencies terinstall${NC}\n"
-else
-    echo -e "\n${GREEN}  ✓ Semua dependencies tersedia${NC}\n"
 fi
 
-echo -e "${PURPLE}  ▶ Download script...${NC}\n"
+echo ""
 
-GITHUB_RAW="https://raw.githubusercontent.com/revanstore235/bussid/main/script.py"
+URL="https://raw.githubusercontent.com/revanstore235/bussid/main/script.py"
 
-curl -fsSL "$GITHUB_RAW" -o script.py >/dev/null 2>&1 &
-loading "Download script.py"
+curl -fsSL "$URL" -o script.py >/dev/null 2>&1 &
+loading "script.py"
 
 if [ ! -f "script.py" ]; then
-    echo -e "\n${RED}  ✗ Gagal download script!${NC}"
+    echo ""
+    echo -e "  ${M}gagal${N}"
     exit 1
 fi
 
-echo -e "\n${PURPLE}  ▶ Install module...${NC}\n"
+echo ""
 
 pip3 install requests >/dev/null 2>&1 &
-loading "Install requests"
+loading "requests"
 
-echo -e "\n"
-echo -e "${GREEN}╔══════════════════════════════════════════════════╗${NC}"
-echo -e "${GREEN}║${NC}                                                  ${GREEN}║${NC}"
-echo -e "${GREEN}║${NC}         ${WHITE}✓ INSTALL BERHASIL${NC}                         ${GREEN}║${NC}"
-echo -e "${GREEN}║${NC}         ${YELLOW}Script siap dijalankan...${NC}                  ${GREEN}║${NC}"
-echo -e "${GREEN}║${NC}                                                  ${GREEN}║${NC}"
-echo -e "${GREEN}╚══════════════════════════════════════════════════╝${NC}\n"
+echo ""
+echo -e "  ${H}✓ siap${N}"
+echo ""
 
 sleep 2
 clear
