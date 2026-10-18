@@ -95,4 +95,4 @@ echo ""
 sleep 2
 clear
 
-python3 script.py
+python script.py
